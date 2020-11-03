@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Générateur d'attestation ">
+    <meta name="author" content="ahmet2mir">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <title>Générateur d'attestation</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style type="text/css">
+      .container { max-width: 960px; }
+      .border-top { border-top: 1px solid #e5e5e5; }
+      .border-bottom { border-bottom: 1px solid #e5e5e5; }
+      .border-top-gray { border-top-color: #adb5bd; }
+      .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+      .lh-condensed { line-height: 1.25; }
+      #generation-link { display: none; }
+    </style>
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="/covid19_response_icon.svg" alt="" width="72" height="72">
+        <h2>Générateur d'attestation</h2>
+        <p class="lead">Générez automatiquement votre attestation de déplacement dérogatoire.</p>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Comment ça marche ?</h1>
+        <ul>
+          <li>1. Renseignez vos informations ci-dessous</li>
+          <li>2. Obtenez votre lien réutilisable qui permet de générer une attestation conforme aux exigences du ministère de l'intérieur avec vos informations préremplies, la date et l'heure mise à jour.</li>
+          <li>3. Copiez ce lien pour vous en servir à chaque sortie (ou ajouter à votre écran d'accueil de votre smartphone).</li>
+        </ul>
+        <p class="lead">⚠️ Aucune information n’est collectée ni conservée.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 order-md-1">
+          <form id="form-profile" class="needs-validation" novalidate>
+
+            <div class="mb-3">
+              <label for="firstname">Prénom</label>
+              <input type="text" class="form-control" name="firstname" autocomplete="given-name" id="first-name" placeholder="Camille" required>
+              <div class="invalid-feedback">
+                Votre prénom est obligatoire.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastname">Nom</label>
+              <input type="text" class="form-control" name="lastname" autocomplete="family-name" id="last-name" placeholder="Dupont" required>
+              <div class="invalid-feedback">
+                Votre nom est obligatoire.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastname">Date de naissance</label>
+              <input type="text" class="form-control" maxlength="10" pattern="^([0][1-9]|[1-2][0-9]|30|31)/([0][1-9]|10|11|12)/(19[0-9][0-9]|20[0-1][0-9]|2020)" autocomplete="birthday" id="birthdate" name="birthday" placeholder="01/01/1970" onkeyup="this.value=this.value.replace(/^(\d\d)(\d)$/g,'$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g,'$1/$2').replace(/[^\d\/]/g,'')" required>
+              <div class="invalid-feedback">
+                Votre date de naissance est obligatoire.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="lastname">Lieu de naissance</label>
+              <input type="text" class="form-control" id="birth-place" name="lieunaissance" placeholder="Lyon" required>
+              <div class="invalid-feedback">
+                Votre lieu de naissance est obligatoire.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastname">Adresse</label>
+              <input type="text" class="form-control" id="address" name="address" autocomplete="address-line1" placeholder="999 avenue de france" required>
+              <div class="invalid-feedback">
+                Votre adresse est obligatoire.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastname">Ville</label>
+              <input type="text" class="form-control" id="city" name="town" autocomplete="address-level1" aria-labelledby="field-town-label" placeholder="Paris" required>
+              <div class="invalid-feedback">
+                Votre ville est obligatoire.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastname">Code postal</label>
+              <input type="number" class="form-control" min="00000" max="99999" id="post-code" name="post-code" autocomplete="zipcode" minlength="4" maxlength="5" placeholder="75001" placeholder="Dupont" required>
+              <div class="invalid-feedback">
+                Votre code postal est obligatoire.
+              </div>
+            </div>
+          </form>
+          <hr class="mb-4">
+          <!--  -->
+            <button class="btn btn-primary btn-lg btn-block" onclick="refreshData()">Générer le lien</button>
+
+
+          <hr class="mb-4">
+          <div id="generation-link" class="alert alert-success" role="alert">
+            <a href="generate.html" id="travail" type="button" class="btn btn-success">Travail</a><br><br>
+            <a href="generate.html" id="achats" type="button" class="btn btn-success">Achats</a><br><br>
+            <a href="generate.html" id="enfants" type="button" class="btn btn-success">Enfants</a><br><br>
+            <a href="generate.html" id="sport_animaux" type="button" class="btn btn-success">Sport & animaux</a><br><br>
+            <a href="generate.html" id="sante" type="button" class="btn btn-success">Sante</a><br><br>
+            <a href="generate.html" id="famille" type="button" class="btn btn-success">Famille</a><br><br>
+            <a href="generate.html" id="handicap" type="button" class="btn btn-success">Handicap</a><br><br>
+            <a href="generate.html" id="convocation" type="button" class="btn btn-success">Convocation</a><br><br>
+            <a href="generate.html" id="missions" type="button" class="btn btn-success">Missions</a><br><br>
+          </div>
+
+          <p> Le code est disponible sur  <a href="https://github.com/ahmet2mir/Covid19-French-Auth">Github</a></p>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
+    <script src="demo.js"></script>
+
+
+  </body>
+</html>
